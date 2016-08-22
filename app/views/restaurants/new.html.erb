@@ -1,5 +1,22 @@
+
 <h1>New Restaurant</h1>
+
 <%= form_for :restaurant, url: restaurants_path do |f| %>
+
+<% if @restaurant.errors.any? %>
+<div id="error_explanation">
+  <h2>
+    <%= pluralize(@restaurant.errors.count, "error") %>
+prohibited this restaurant from being saved:
+    </h2>
+    <ul>
+      <% @restaurant.errors.full_messages.each do |error| %>
+      <li> <%= error %> </li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
   <p>
     <%= f.label :name %><br>
     <%= f.text_field :name %>
@@ -13,4 +30,7 @@
   <p>
     <%= f.submit %>
   </p>
+<% end %>
+<% if @restaurant.id %>
+<%= link_to 'Back',restaurant_path %>
 <% end %>

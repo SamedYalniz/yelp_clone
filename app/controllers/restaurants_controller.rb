@@ -7,13 +7,17 @@ class RestaurantsController < ApplicationController
   end
 
   def new
+    @restaurant = Restaurant.new
   end
-  
+
   def create
     @restaurant = Restaurant.new(restaurant_params)
+    if @restaurant.save
+      redirect_to @restaurant
+    else
+      render 'new'
+    end
 
-    @restaurant.save
-    redirect_to @restaurant
   end
 
   private
