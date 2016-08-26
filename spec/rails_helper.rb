@@ -7,6 +7,7 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rails'
 require 'shoulda-matchers'
+require_relative 'helpers/restaurant_helpers'
 
 ActiveRecord::Migration.maintain_test_schema!
 

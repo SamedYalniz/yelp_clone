@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+
 feature 'restaurants' do
 
   before do
@@ -70,31 +71,37 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
-      before {Restaurant.create name: 'KFC', description: 'deep fried goodness'}
-      scenario 'let a user edit a restaurant' do
-        visit '/restaurants'
-        click_link 'Edit KFC'
-        fill_in 'Name', with: 'Kentucky Fried Chicken'
-        fill_in 'Description', with: "deep fried goodness"
-        click_button 'Update Restaurant'
+      scenario 'user can edit his own restaurant' do
+        click_link 'Sign out'
+        sign_up_and_add_restaurant
+        edit_restaurant
         expect(page).to have_content 'Kentucky Fried Chicken'
         expect(current_path).to eq '/restaurants'
+      end
+      scenario 'user cannot edit restaurants he did not create' do
+        add_restaurant
+        click_link 'Sign out'
+        sign_up
+        expect(page).not_to have_content("Edit KFC")
       end
   end
 
   context 'deleting restaurants' do
-    before { Restaurant.create name: 'KFC', description: 'deep friend goodness' }
-    scenario 'removes a restaurant when a user clicks a delete link' do
-      visit '/restaurants'
+    scenario 'user can delete his own restaurant' do
+      click_link 'Sign out'
+      sign_up_and_add_restaurant
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
+      expect(current_path).to eq '/restaurants'
+    end
+    scenario 'user cannot delete restaurants he did not create' do
+      add_restaurant
+      click_link 'Sign out'
+      sign_up
+      expect(page).not_to have_content("Delete KFC")
     end
   end
-
-
-
-
 
 
 
